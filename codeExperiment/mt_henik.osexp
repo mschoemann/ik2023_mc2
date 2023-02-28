@@ -1,0 +1,795 @@
+---
+API: 2.1
+OpenSesame: 3.2.7
+Platform: nt
+---
+set width 1024
+set uniform_coordinates yes
+set title Henik
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set mouse_backend legacy
+set keyboard_backend legacy
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground black
+set font_underline no
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "C:\\Users\\David\\Documents\\OS_Experiment"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set color_backend legacy
+set clock_backend legacy
+set canvas_backend legacy
+set background white
+
+define sketchpad Intro_main
+	set duration keypress
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Nun beginnt das Experiment. <br /><br />Falls Sie noch Fragen haben kontaktieren Sie bitte den/die Versuchsleiter*in. <br /><br />Drücken Sie die Leertaste, um mit dem Experiment zu beginnen." x=0 y=0 z_index=0
+
+define sketchpad Intro_start
+	set duration keypress
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Herzlich Wilkommen! <br /><br />Vielen Dank, dass Sie sich Zeit für unsere Studie nehmen.<br /><br />Drücken Sie die Leertaste zum fortfahren.<br />" x=0 y=0 z_index=0
+
+define sketchpad Intro_start_2
+	set duration keypress
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="In dieser Studie werden Ihnen zwei unterschiedliche Zahlen im Bereich von 1 bis 9 dargeboten. Die beiden dargebotenen Zahlen unterscheiden sich in ihrer Höhe. Eine 6 wäre z.B. höher als eine 5. <br /><br />Zusätzlich werden sich die beiden Zahlen auch in ihrer dargebotenen visuellen Größe unterscheiden. <br /><br />In den beiden oberen Ecken des Bildschirms befinden sich zwei viereckige Felder.<br />Ihre Aufgabe ist, es den Cursor (die Maus) so schnell wie möglich in das viereckige Feld auf der Seite der HÖHEREN Zahl zu bewegen. Ist der Cursor im Feld müssen Sie KEINE Taste drücken. <br /><br />Das bedeutet: würden die Zahlen 4 und 5 dargeboten werden, soll der Cursor so schnell wie möglich in das viereckige Feld auf der Seite der 5 bewegt werden. <br /><br />Drücken Sie die Leertaste zum fortfahren. " x=0 y=0 z_index=0
+
+define sketchpad Intro_test
+	set duration keypress
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Zunächst beginnen 4 Übungsdurchläufe. <br /><br />Aufgabe: Bewegen Sie den Cursor so schnell wie möglich in das viereckige Feld auf der Seite der höheren Zahl. <br /><br />Drücken Sie die Leertaste zum fortfahren." x=0 y=-32 z_index=0
+
+define sketchpad ansage_richtig
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color="#00aa00" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Die Geschwindigkeit ist gut so!" x=0 y=0 z_index=0
+
+define sketchpad ansage_zuschnell
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color="#ff0000" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Bewege den Cursor nächstes mal etwas langsamer am Start! " x=0 y=0 z_index=0
+
+define mousetrap_response button_response_main
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback no
+	set timeout infinite
+	set start_coordinates "0;280"
+	set skip_item no
+	set save_trajectories no
+	set reset_mouse no
+	set number_of_buttons 1
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button ""
+	set click_required yes
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 ""
+	set button1 "x=-64 y=320 w=128 h=64 name=example"
+	set boundaries "upper=no lower=no left=no right=no"
+
+define mousetrap_response button_response_test
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback no
+	set timeout infinite
+	set start_coordinates "0;280"
+	set skip_item no
+	set save_trajectories no
+	set reset_mouse no
+	set number_of_buttons 1
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button ""
+	set click_required yes
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 ""
+	set button1 "x=-64 y=320 w=128 h=64 name=example"
+	set boundaries "upper=no lower=no left=no right=no"
+
+define sketchpad canvas_main_button
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text=OK x=0 y=352 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Drücken Sie OK zum starten." x=0 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=64 penwidth=1 show_if=always w=128 x=-64 y=320 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=-96 penwidth=1 show_if=always w=160 x=352 y=-288 z_index=0
+
+define sketchpad canvas_main_button_1
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
+
+define sketchpad canvas_main_button_1_1
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
+
+define sketchpad canvas_stimuli
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=35 html=yes show_if=always text="[NumberBig]" x="[NumberPositionBig]" y=-320 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=15 html=yes show_if=always text="[NumberSmall]" x="[NumberPositionSmall]" y=-320 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+
+define sketchpad canvas_stimuli_1
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=35 html=yes show_if=always text="[NumberBig]" x="[NumberPositionBig]" y=-320 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=15 html=yes show_if=always text="[NumberSmall]" x="[NumberPositionSmall]" y=-320 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
+
+define sketchpad canvas_test
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=35 html=yes show_if=always text="[NumberBig]" x="[NumberPositionBig]" y=-320 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=15 html=yes show_if=always text="[NumberSmall]" x="[NumberPositionSmall]" y=-320 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
+
+define sketchpad canvas_test_button
+	set duration 0
+	set description "Präsentiert Stimuli"
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text=OK x=0 y=352 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Drücken Sie OK zum starten." x=0 y=-288 z_index=0
+	draw rect color="#000000" fill=0 h=64 penwidth=1 show_if=always w=128 x=-64 y=320 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
+	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Führt mehrere Items nacheinander aus"
+	run Intro_start always
+	run Intro_start_2 always
+	run Intro_test always
+	run test_loop always
+	run Intro_main always
+	run main_loop always
+	run new_sketchpad always
+
+define inline_script for_if_ypos
+	set description "Executes Python code"
+	set _run ""
+	___prepare__
+	var.l1 = list()
+	for i in range(1,1000):
+		if var.ypos_mousetrap_main[i]>128: 
+			var.l1[i] = 1 
+	var.sum_l1 =  sum(var.l1)
+	for i in range(1, var.sum_l1):
+		var.ypos_mousetrap_main[i] = 0
+	for i in range(1, var.sum_l1):
+		var.xpos_mousetrap_main[i] = 0
+	__end__
+
+define form_text_display introduction_text
+	set timeout infinite
+	set spacing 10
+	set rows "1;4;1"
+	set only_render no
+	set ok_text Ok
+	set margins "50;50;50;50"
+	set form_title Einführung
+	__form_text__
+	Hallo wilkommen zum Experiment. 
+	Bitte bewege den Cursor in das Feld auf der Seite der höheren Zahl.
+	__end__
+	set description "A simple text display form"
+	set cols "1;1;1"
+	set _theme gray
+	widget 0 0 3 1 label text="[form_title]"
+	widget 0 1 3 1 label center=no text="[form_text]"
+	widget 1 2 1 1 button text="[ok_text]"
+
+
+define logger logger_main
+	set description "Registriert experimentelle Daten"
+	set auto_log no
+	log correct
+	log NumberCorrect
+	log Condition
+	log NumberBig
+	log NumberSmall
+	log xpos_mousetrap_tilhover
+	log ypos_mousetrap_tilhover
+	log timestamps_mousetrap_tilhover
+	log xpos_mousetrap_afterhover
+	log ypos_mousetrap_afterhover
+	log timestamps_mousetrap_afterhover
+	log NumberPositionBig
+	log NumberPositionSmall
+
+define loop main_loop
+	set source table
+	set repeat 1
+	set order random
+	set description "Führt wiederholt ein anderes Item aus"
+	set cycles 32
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 NumberBig 1
+	setcycle 0 NumberSmall 2
+	setcycle 0 NumberCorrect 2
+	setcycle 0 Condition incongruent
+	setcycle 0 NumberPositionBig -15
+	setcycle 0 NumberPositionSmall 15
+	setcycle 1 NumberBig 2
+	setcycle 1 NumberSmall 1
+	setcycle 1 NumberCorrect 2
+	setcycle 1 Condition congruent
+	setcycle 1 NumberPositionBig -15
+	setcycle 1 NumberPositionSmall 15
+	setcycle 2 NumberBig 2
+	setcycle 2 NumberSmall 3
+	setcycle 2 NumberCorrect 3
+	setcycle 2 Condition incongruent
+	setcycle 2 NumberPositionBig -15
+	setcycle 2 NumberPositionSmall 15
+	setcycle 3 NumberBig 3
+	setcycle 3 NumberSmall 2
+	setcycle 3 NumberCorrect 3
+	setcycle 3 Condition congruent
+	setcycle 3 NumberPositionBig -15
+	setcycle 3 NumberPositionSmall 15
+	setcycle 4 NumberBig 3
+	setcycle 4 NumberSmall 4
+	setcycle 4 NumberCorrect 4
+	setcycle 4 Condition incongruent
+	setcycle 4 NumberPositionBig -15
+	setcycle 4 NumberPositionSmall 15
+	setcycle 5 NumberBig 4
+	setcycle 5 NumberSmall 3
+	setcycle 5 NumberCorrect 4
+	setcycle 5 Condition congruent
+	setcycle 5 NumberPositionBig -15
+	setcycle 5 NumberPositionSmall 15
+	setcycle 6 NumberBig 4
+	setcycle 6 NumberSmall 5
+	setcycle 6 NumberCorrect 5
+	setcycle 6 Condition incongruent
+	setcycle 6 NumberPositionBig -15
+	setcycle 6 NumberPositionSmall 15
+	setcycle 7 NumberBig 5
+	setcycle 7 NumberSmall 4
+	setcycle 7 NumberCorrect 5
+	setcycle 7 Condition congruent
+	setcycle 7 NumberPositionBig -15
+	setcycle 7 NumberPositionSmall 15
+	setcycle 8 NumberBig 5
+	setcycle 8 NumberSmall 6
+	setcycle 8 NumberCorrect 6
+	setcycle 8 Condition incongruent
+	setcycle 8 NumberPositionBig -15
+	setcycle 8 NumberPositionSmall 15
+	setcycle 9 NumberBig 6
+	setcycle 9 NumberSmall 5
+	setcycle 9 NumberCorrect 6
+	setcycle 9 Condition congruent
+	setcycle 9 NumberPositionBig -15
+	setcycle 9 NumberPositionSmall 15
+	setcycle 10 NumberBig 6
+	setcycle 10 NumberSmall 7
+	setcycle 10 NumberCorrect 7
+	setcycle 10 Condition incongruent
+	setcycle 10 NumberPositionBig -15
+	setcycle 10 NumberPositionSmall 15
+	setcycle 11 NumberBig 7
+	setcycle 11 NumberSmall 6
+	setcycle 11 NumberCorrect 7
+	setcycle 11 Condition congruent
+	setcycle 11 NumberPositionBig -15
+	setcycle 11 NumberPositionSmall 15
+	setcycle 12 NumberBig 7
+	setcycle 12 NumberSmall 8
+	setcycle 12 NumberCorrect 8
+	setcycle 12 Condition incongruent
+	setcycle 12 NumberPositionBig -15
+	setcycle 12 NumberPositionSmall 15
+	setcycle 13 NumberBig 8
+	setcycle 13 NumberSmall 7
+	setcycle 13 NumberCorrect 8
+	setcycle 13 Condition congruent
+	setcycle 13 NumberPositionBig -15
+	setcycle 13 NumberPositionSmall 15
+	setcycle 14 NumberBig 8
+	setcycle 14 NumberSmall 9
+	setcycle 14 NumberCorrect 9
+	setcycle 14 Condition incongruent
+	setcycle 14 NumberPositionBig -15
+	setcycle 14 NumberPositionSmall 15
+	setcycle 15 NumberBig 9
+	setcycle 15 NumberSmall 8
+	setcycle 15 NumberCorrect 9
+	setcycle 15 Condition congruent
+	setcycle 15 NumberPositionBig -15
+	setcycle 15 NumberPositionSmall 15
+	setcycle 16 NumberBig 1
+	setcycle 16 NumberSmall 2
+	setcycle 16 NumberCorrect 2
+	setcycle 16 Condition incongruent
+	setcycle 16 NumberPositionBig 15
+	setcycle 16 NumberPositionSmall -15
+	setcycle 17 NumberBig 2
+	setcycle 17 NumberSmall 1
+	setcycle 17 NumberCorrect 2
+	setcycle 17 Condition congruent
+	setcycle 17 NumberPositionBig 15
+	setcycle 17 NumberPositionSmall -15
+	setcycle 18 NumberBig 2
+	setcycle 18 NumberSmall 3
+	setcycle 18 NumberCorrect 3
+	setcycle 18 Condition incongruent
+	setcycle 18 NumberPositionBig 15
+	setcycle 18 NumberPositionSmall -15
+	setcycle 19 NumberBig 3
+	setcycle 19 NumberSmall 2
+	setcycle 19 NumberCorrect 3
+	setcycle 19 Condition congruent
+	setcycle 19 NumberPositionBig 15
+	setcycle 19 NumberPositionSmall -15
+	setcycle 20 NumberBig 3
+	setcycle 20 NumberSmall 4
+	setcycle 20 NumberCorrect 4
+	setcycle 20 Condition incongruent
+	setcycle 20 NumberPositionBig 15
+	setcycle 20 NumberPositionSmall -15
+	setcycle 21 NumberBig 4
+	setcycle 21 NumberSmall 3
+	setcycle 21 NumberCorrect 4
+	setcycle 21 Condition congruent
+	setcycle 21 NumberPositionBig 15
+	setcycle 21 NumberPositionSmall -15
+	setcycle 22 NumberBig 4
+	setcycle 22 NumberSmall 5
+	setcycle 22 NumberCorrect 5
+	setcycle 22 Condition incongruent
+	setcycle 22 NumberPositionBig 15
+	setcycle 22 NumberPositionSmall -15
+	setcycle 23 NumberBig 5
+	setcycle 23 NumberSmall 4
+	setcycle 23 NumberCorrect 5
+	setcycle 23 Condition congruent
+	setcycle 23 NumberPositionBig 15
+	setcycle 23 NumberPositionSmall -15
+	setcycle 24 NumberBig 5
+	setcycle 24 NumberSmall 6
+	setcycle 24 NumberCorrect 6
+	setcycle 24 Condition incongruent
+	setcycle 24 NumberPositionBig 15
+	setcycle 24 NumberPositionSmall -15
+	setcycle 25 NumberBig 6
+	setcycle 25 NumberSmall 5
+	setcycle 25 NumberCorrect 6
+	setcycle 25 Condition congruent
+	setcycle 25 NumberPositionBig 15
+	setcycle 25 NumberPositionSmall -15
+	setcycle 26 NumberBig 6
+	setcycle 26 NumberSmall 7
+	setcycle 26 NumberCorrect 7
+	setcycle 26 Condition incongruent
+	setcycle 26 NumberPositionBig 15
+	setcycle 26 NumberPositionSmall -15
+	setcycle 27 NumberBig 7
+	setcycle 27 NumberSmall 6
+	setcycle 27 NumberCorrect 7
+	setcycle 27 Condition congruent
+	setcycle 27 NumberPositionBig 15
+	setcycle 27 NumberPositionSmall -15
+	setcycle 28 NumberBig 7
+	setcycle 28 NumberSmall 8
+	setcycle 28 NumberCorrect 8
+	setcycle 28 Condition incongruent
+	setcycle 28 NumberPositionBig 15
+	setcycle 28 NumberPositionSmall -15
+	setcycle 29 NumberBig 8
+	setcycle 29 NumberSmall 7
+	setcycle 29 NumberCorrect 8
+	setcycle 29 Condition congruent
+	setcycle 29 NumberPositionBig 15
+	setcycle 29 NumberPositionSmall -15
+	setcycle 30 NumberBig 8
+	setcycle 30 NumberSmall 9
+	setcycle 30 NumberCorrect 9
+	setcycle 30 Condition incongruent
+	setcycle 30 NumberPositionBig 15
+	setcycle 30 NumberPositionSmall -15
+	setcycle 31 NumberBig 9
+	setcycle 31 NumberSmall 8
+	setcycle 31 NumberCorrect 9
+	setcycle 31 Condition congruent
+	setcycle 31 NumberPositionBig 15
+	setcycle 31 NumberPositionSmall -15
+	run main_sequence
+
+define sequence main_sequence
+	set flush_keyboard yes
+	set description "Führt mehrere Items nacheinander aus"
+	run canvas_main_button always
+	run button_response_main always
+	run canvas_main_button_1 always
+	run mousetrap_tilhover always
+	run canvas_stimuli_1 always
+	run mousetrap_afterhover always
+	run new_inline_script_3 always
+	run logger_main always
+
+define mousetrap_response mousetrap_afterhover
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback yes
+	set timeout infinite
+	set start_coordinates "0;280"
+	set skip_item no
+	set save_trajectories yes
+	set reset_mouse no
+	set number_of_buttons 2
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button "[NumberCorrect]"
+	set click_required no
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 "x=512 y=-288 w=-160 h=-96 name=[NumberSmall]"
+	set button1 "x=-512 y=-288 w=160 h=-96 name=[NumberBig]"
+	set boundaries "upper=no lower=no left=no right=no"
+
+define mousetrap_response mousetrap_tilhover
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback no
+	set timeout infinite
+	set start_coordinates "0;352"
+	set skip_item no
+	set save_trajectories yes
+	set reset_mouse yes
+	set number_of_buttons 1
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button "[NumberCorrect]"
+	set click_required no
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 ""
+	set button1 "x=-100 y=-100 w=200 h=200 name=example"
+	set boundaries "upper=128 lower=no left=-512 right=512"
+
+define coroutines new_coroutines
+	set function_name ""
+	set flush_keyboard yes
+	set end_after_item ""
+	set duration 5000
+	set description "Führe Items gleichzeitig aus"
+
+define inline_script new_inline_script
+	set description "Executes Python code"
+	set _run if
+	set _prepare ""
+
+define inline_script new_inline_script_1
+	set description "Executes Python code"
+	___run__
+	if var.ypos_test_afterhover[0] <= 96: 
+		var.ansage = 0
+	else: 
+		var.ansage = 1
+	__end__
+	set _prepare ""
+
+define inline_script new_inline_script_2
+	set description "Executes Python code"
+	set _run "var.ansage = None"
+	set _prepare ""
+
+define inline_script new_inline_script_3
+	set description "Executes Python code"
+	___run__
+	if var.NumberPositionSmall == -15:
+		var.NumberPositionSmall = "links"
+	else: 
+		var.NumberPositionSmall = "rechts"
+	
+	if var.NumberPositionBig == -15:
+		var.NumberPositionBig = "links"
+	else: 
+		var.NumberPositionBig = "rechts"
+	__end__
+	set _prepare ""
+
+define keyboard_response new_keyboard_response
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Sammelt Tastaturantworten"
+
+define loop new_loop
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Führt wiederholt ein anderes Item aus"
+	set cycles 1
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 empty_column ""
+	run ""
+
+define mouse_response new_mouse_response
+	set timeout infinite
+	set show_cursor yes
+	set linked_sketchpad canvas_main_button
+	set flush yes
+	set event_type mouseclick
+	set duration mouseclick
+	set description "Sammelt Mausreaktionen"
+	set allowed_responses left_button
+
+define mouse_response new_mouse_response_1
+	set timeout infinite
+	set show_cursor yes
+	set linked_sketchpad ""
+	set flush yes
+	set event_type mouseclick
+	set duration mouseclick
+	set description "Sammelt Mausreaktionen"
+
+define mouse_response new_mouse_response_2
+	set timeout infinite
+	set show_cursor yes
+	set linked_sketchpad ""
+	set flush yes
+	set event_type mouseclick
+	set duration mouseclick
+	set description "Sammelt Mausreaktionen"
+
+define mousetrap_response new_mousetrap_response
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback yes
+	set timeout infinite
+	set start_coordinates "0;280"
+	set skip_item no
+	set save_trajectories yes
+	set reset_mouse no
+	set number_of_buttons 2
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button "[NumberCorrect]"
+	set click_required no
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 "x=512 y=-288 w=-160 h=-96 name=[NumberSmall]"
+	set button1 "x=-512 y=-288 w=160 h=-96 name=[NumberBig]"
+	set boundaries "upper=no lower=no left=no right=no"
+
+define sketchpad new_sketchpad
+	set duration keypress
+	set description "Präsentiert Stimuli"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Das Experiment ist nun vorbei. <br /><br />Vielen Dank für Ihre Teilnahme! <br /><br />Bitte geben Sie dem/der Versuchsleiter*in Bescheid." x=0 y=0 z_index=0
+
+define sketchpad new_sketchpad_1
+	set duration keypress
+	set description "Präsentiert Stimuli"
+
+define form_text_display start_button_main
+	set timeout infinite
+	set spacing 10
+	set rows "1;4;1"
+	set only_render no
+	set ok_text Ok
+	set margins "20;300;20;300"
+	set form_title "Drücke Ok um zu beginnen"
+	set form_text ""
+	set description "A simple text display form"
+	set cols "1;1;1"
+	set _theme gray
+	widget 0 0 3 1 label text="[form_title]"
+	widget 0 1 3 1 label center=no text="[form_text]"
+	widget 1 2 1 1 button text="[ok_text]"
+
+
+define form_text_display start_button_test
+	set timeout infinite
+	set spacing 10
+	set rows "1;4;1"
+	set only_render no
+	set ok_text Ok
+	set margins "20;300;20;300"
+	set form_title "Drücke Ok um zu beginnen"
+	set form_text ""
+	set description "A simple text display form"
+	set cols "1;1;1"
+	set _theme gray
+	widget 0 0 3 1 label text="[form_title]"
+	widget 0 1 3 1 label center=no text="[form_text]"
+	widget 1 2 1 1 button text="[ok_text]"
+
+
+define mousetrap_response test_afterhover
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback yes
+	set timeout 2495
+	set start_coordinates "0;280"
+	set skip_item no
+	set save_trajectories yes
+	set reset_mouse no
+	set number_of_buttons 2
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button "[NumberCorrect]"
+	set click_required no
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 "x=512 y=-288 w=-160 h=-96 name=[NumberSmall]"
+	set button1 "x=-512 y=-288 w=160 h=-96 name=[NumberBig]"
+	set boundaries "upper=no lower=no left=no right=no"
+
+define loop test_loop
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Führt wiederholt ein anderes Item aus"
+	set cycles 4
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 NumberBig 2
+	setcycle 0 NumberSmall 1
+	setcycle 0 NumberCorrect 2
+	setcycle 0 Condition congruent
+	setcycle 0 NumberPositionBig -15
+	setcycle 0 NumberPositionSmall 15
+	setcycle 0 ansage ""
+	setcycle 1 NumberBig 6
+	setcycle 1 NumberSmall 7
+	setcycle 1 NumberCorrect 1
+	setcycle 1 Condition incongruent
+	setcycle 1 NumberPositionBig -15
+	setcycle 1 NumberPositionSmall 15
+	setcycle 1 ansage ""
+	setcycle 2 NumberBig 9
+	setcycle 2 NumberSmall 8
+	setcycle 2 NumberCorrect 9
+	setcycle 2 Condition congruent
+	setcycle 2 NumberPositionBig 15
+	setcycle 2 NumberPositionSmall -15
+	setcycle 2 ansage ""
+	setcycle 3 NumberBig 3
+	setcycle 3 NumberSmall 4
+	setcycle 3 NumberCorrect 4
+	setcycle 3 Condition incongruent
+	setcycle 3 NumberPositionBig 15
+	setcycle 3 NumberPositionSmall -15
+	setcycle 3 ansage ""
+	run test_sequence
+
+define sequence test_sequence
+	set flush_keyboard yes
+	set description "Führt mehrere Items nacheinander aus"
+	run canvas_test_button always
+	run button_response_test always
+	run new_inline_script_2 always
+	run canvas_main_button_1_1 always
+	run test_tilhover always
+	run canvas_test always
+	run test_afterhover always
+	run new_inline_script_1 always
+	run ansage_zuschnell "[ansage] = 0"
+	run new_mouse_response_2 "[ansage] = 0"
+	run ansage_richtig "[ansage] = 1"
+	run new_mouse_response_1 "[ansage] = 1"
+
+define mousetrap_response test_tilhover
+	__warning_message__
+	draw textline text="Please start moving" x=0 y=0 sketchpad=example
+	__end__
+	set update_feedback no
+	set timeout infinite
+	set start_coordinates "0;352"
+	set skip_item no
+	set save_trajectories no
+	set reset_mouse yes
+	set number_of_buttons 1
+	set mouse_buttons_allowed "left_button;right_button"
+	set max_initiation_time 1000
+	set logging_resolution 1
+	set description "Tracks mouse movements"
+	set correct_button "[NumberCorrect]"
+	set click_required no
+	set check_initiation_time no
+	set button4 ""
+	set button3 ""
+	set button2 ""
+	set button1 "x=-100 y=-100 w=200 h=200 name=example"
+	set boundaries "upper=128 lower=no left=-512 right=512"
+
+define inline_script variables_for_logger
+	set description "Executes Python code"
+	set _run ""
+	___prepare__
+	var.ypos = var.ypos_mousetrap_main
+	var.xpos = var.xpos_mousetrap_main
+	var.timestamps = var.timestamps_mousetrap_main
+	__end__
+
+define inline_script while_loop
+	set description "Executes Python code"
+	___run__
+	while var.ypos_mousetrap_main > 128: 
+		var.ypos_mousetrap_main = 0
+	
+	while var.ypos_moustrap_main > 128:
+		var.xpos_mousetrap_main = 0
+	__end__
+	___prepare__
+	while var.ypos_mousetrap_main > 128: 
+		var.ypos_mousetrap_main = 0
+	
+	while var.ypos_moustrap_main > 128:
+		var.xpos_mousetrap_main = 0
+	__end__
+

@@ -1,0 +1,15 @@
+# R
+.Rproj.user
+.Rhistory
+*.RData
+.Ruserdata
+
+# Jabref
+*.sav
+*.bak
+*.sav.tmp
+
+# Mac
+.DS_Store
+
+# specifics
