@@ -2,7 +2,7 @@
 title: 'MC2: Tracking the embodied dynamics of cognition using computer mouse tracking'
 author: "Stefan Scherbaum & Martin Schoemann"
 output:
-  html_document: 
+  html_notebook: 
     toc: yes
     highlight: haddock
     theme: flatly
@@ -33,7 +33,7 @@ As a rough overview of the steps, we will cover:
 * continuous measure
 * statistical analysis
 
-But now, checkout/fork the repository (if you haven't done yet), open the R project, and let's get started!
+But now, checkout/fork the [repository](https://github.com/mschoemann/MT_Devices) (if you haven't done yet), open the R project, and let's get started!
 
 
 # Read the data
@@ -47,7 +47,7 @@ library(readbulk)
 df = read_opensesame(directory = "../dataRaw/", verbose = F)
 ```
 
-For data wrangling, we use the [dplyr]() and [readr]() package from the [tidyverse](), and we create a variable `p_num` for the participant number and select, rename, and order the relevant variables only.
+For data wrangling, we use the [dplyr](https://dplyr.tidyverse.org/) and [readr](https://readr.tidyverse.org/) package from the [tidyverse](https://www.tidyverse.org/), and we create a variable `p_num` for the participant number and select, rename, and order the relevant variables only.
 ```{r wrangling, }
 library(dplyr)
 library(readr)
@@ -71,7 +71,7 @@ glimpse(df)
 ```
 
 Before we can export the data to Matlab, we have to parse the string-ish data arrays of the mouse-tracking data.
-We do that by using the [mousetrap]() package, which we will use anyways throughout the entire notebook, turn our data into a mousetrap data object, reshape it into a long format, and export a .csv-file.
+We do that by using the [mousetrap](http://pascalkieslich.github.io/mousetrap/index.html) package, which we will use anyways throughout the entire notebook, turn our data into a mousetrap data object, reshape it into a long format, and export a .csv-file.
 ```{r export}
 library(mousetrap)
 mt = df %>% 
