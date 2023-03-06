@@ -8,50 +8,48 @@ output:
     theme: flatly
 ---
 
-```{r setup, include = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
-  error = FALSE
+  error = FALSE,
 )
 ```
 
 # Overview
 
 In this [R Markdown](https://rmarkdown.rstudio.com/) notebook, we will have a hands-on look at the embodied dynamics of your own cognition during the [Henik task](https://doi.org/10.3758/BF03202431) which had implemented and ran in [OpenSesame](https://osdoc.cogsci.nl/3.3/) using the [mousetrap plugin](https://github.com/PascalKieslich/mousetrap-os).
-In order to that, we will use both [R](https://www.r-project.org/) (obviously :) and [Matlab](https://www.mathworks.com/products/matlab.html).
 
-First, we will use R to read the data created by OpenSesame, to do some initial data wrangling, and to export the data in a format that can easily be read by Matlab.
-Then, we will have a look into separate analysis pipelines within R and Matlab where we will go through both common (shared) and different (unique) analysis steps.
-As a rough overview of the steps, we will cover:
+Since we have two separate analysis pipelines both in [R](https://www.r-project.org/) and [Matlab](https://www.mathworks.com/products/matlab.html), we will go through both shared and unique analysis steps. As a rough overview, we will cover: 
 
-* data import
-* geometric processing
-* re-sampling and interpolation
-* visualization
-* summary measure
-* continuous measure
-* statistical analysis
+1. Data import
+2. Geometric processing
+3. Re-sampling and interpolation
+4. Visualization
+5. Summary measures
+6. Continuous measures
+7. Statistical analysis
 
-But now, checkout/fork the [repository](https://github.com/mschoemann/MT_Devices) (if you haven't done yet), open the R project, and let's get started!
-
-
-# Read the data
-
-Reading (mouse-tracking) data produced by OpenSesame in R is very easy and fast compared to Matlab.
-This is due the fact that OpenSesame keeps the data in the wide format and hence has to store the mouse-tracking data in a string-ish data array that has to be parsed at some point and R can handle such task much better than Matlab.
-Hence, we use the `read_opensesame()` function from the [readbulk](https://pascalkieslich.github.io/readbulk/) package.
-
-```{r reading}
+```{r setup, results='hide'}
 library(readbulk)
-df = read_opensesame(directory = "../dataRaw/", verbose = F)
+library(tidyverse)
+library(cowplot)
+library(mousetrap)
+
+theme_set(theme_bw(base_size = 8, base_family = "") +
+            theme(legend.position = "top", 
+                  plot.background = element_blank(),
+                  panel.grid = element_blank(),
+                  strip.text.y=element_text(hjust=0,vjust=1,angle=180),
+                  panel.border = element_rect(colour = "black")))
 ```
 
-For data wrangling, we use the [dplyr](https://dplyr.tidyverse.org/) and [readr](https://readr.tidyverse.org/) package from the [tidyverse](https://www.tidyverse.org/), and we create a variable `p_num` for the participant number and select, rename, and order the relevant variables only.
-```{r wrangling, }
-library(dplyr)
-library(readr)
-df = df %>% 
+# Data import
+
+Our pipeline here in R starts with importing the raw data, combine the single data from each participant, and turning them into a structure that we can easily work with, that is, the [mousetrap](http://pascalkieslich.github.io/mousetrap/index.html) package is optimized for.  
+
+```{r import}
+df = read_opensesame(directory = "../dataRaw/", verbose = F) %>% 
   mutate(
     File = parse_number(File) %>% abs()
   ) %>% 
@@ -68,44 +66,13 @@ df = df %>%
   )
 glimpse(df)
 
-```
-
-Before we can export the data to Matlab, we have to parse the string-ish data arrays of the mouse-tracking data.
-We do that by using the [mousetrap](http://pascalkieslich.github.io/mousetrap/index.html) package, which we will use anyways throughout the entire notebook, turn our data into a mousetrap data object, reshape it into a long format, and export a .csv-file.
-```{r export}
-library(mousetrap)
 mt = df %>% 
   mt_import_mousetrap()
-mt %>% 
-  mt_export_long(
-    use2_variables = .$data %>% select(!mt_id) %>% colnames()
-  ) %>% 
-  write_csv(
-    file = "../dataPrepared/ik_henik.csv"
-  )
-```
-
-That being done, we can now go into the two processing pipelines.
-If you like to use Matlab, start Matlab and open `analysis_ik_henik.mlx`.
-If you like to use R, just stay here and follow this notebook.
-
-Here in R, many relevant packages (i.e., dplyr and mousetrap) are already loaded, but for convenient data visualization, we prepare a little more, namely, loading [ggplot2]() and [cowplot]() as well as define the default appearance of plots.
-
-```{r prep, echo=FALSE}
-library(ggplot2)
-library(cowplot)
-
-theme_set(theme_bw(base_size = 8, base_family = "") +
-            theme(legend.position = "top", 
-                  plot.background = element_blank(),
-                  panel.grid = element_blank(),
-                  strip.text.y=element_text(hjust=0,vjust=1,angle=180),
-                  panel.border = element_rect(colour = "black")))
 ```
 
 
 # Geometric processing
-So, the data are already imported and available in `mt`. 
+So, the data are already imported and available in `mt` in convenient structure. 
 Now, we look at the cursor trajectories from only one participant in order to learn about:
 
 + how OpenSesame has tracked the cursor position
@@ -131,7 +98,10 @@ mt = mt %>%
     align_end = F,
     coordinates = 'norm'
   )
-mt %>% mt_plot()
+
+mt %>% 
+  mt_subset(p_num==0) %>% 
+  mt_plot()
 ```
 
 
@@ -141,8 +111,12 @@ We cannot easily see that characteristic when we plot the trajectories on the x/
 
 ```{r resampling1}
 plot_grid(
-  mt %>% mt_plot(x = "timestamps", y = "xpos"),
-  mt %>% mt_plot(x = "timestamps", y = "ypos"),
+  mt %>% 
+    mt_subset(p_num==0) %>% 
+    mt_plot(x = "timestamps", y = "xpos"),
+  mt %>%
+    mt_subset(p_num==0) %>% 
+    mt_plot(x = "timestamps", y = "ypos"),
   nrow = 1,
   labels = NULL
 )
@@ -165,19 +139,22 @@ mt$ln_trajectories = abind::abind(mt$ln_trajectories,t(array(1:20, dim=rev(dim(m
 dimnames(mt$ln_trajectories)[[3]][3]="steps"
   
 plot_grid(
-  mt %>% mt_plot(use = "tn_trajectories", x = "steps", y = "xpos"),
-  mt %>% mt_plot(use = "ln_trajectories", x = "steps", y = "xpos"),
-  mt %>% mt_plot(use = "rs_trajectories", x = "timestamps", y = "xpos"),
+  mt %>% 
+    mt_subset(p_num==0) %>% 
+    mt_plot(use = "tn_trajectories", x = "steps", y = "xpos"),
+  mt %>% 
+    mt_subset(p_num==0) %>% 
+    mt_plot(use = "ln_trajectories", x = "steps", y = "xpos"),
+  mt %>% 
+    mt_subset(p_num==0) %>% 
+    mt_plot(use = "rs_trajectories", x = "timestamps", y = "xpos"),
   nrow = 1,
   labels = NULL
 )
 ```
 
 
-
-
-
-# visualization
-# summary measure
-# continuous measure
-# statistical analysis
+# Visualization
+# Summary measures
+# Continuous measures
+# Statistical analysis
