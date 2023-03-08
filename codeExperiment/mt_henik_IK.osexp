@@ -26,7 +26,7 @@ set font_size 18
 set font_italic no
 set font_family mono
 set font_bold no
-set experiment_path "/home/ms/Schreibtisch/Research/MT_Devices"
+set experiment_path "/home/ms/Schreibtisch/Research/MT_Devices/git/MT_Devices/codeExperiment"
 set disable_garbage_collection yes
 set description "The main experiment item"
 set coordinates uniform
@@ -38,33 +38,33 @@ set background white
 
 define sketchpad Intro_main
 	set duration keypress
-	set description "Präsentiert Stimuli"
-	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Nun beginnt das Experiment. <br /><br />Falls Sie noch Fragen haben kontaktieren Sie bitte den/die Versuchsleiter*in. <br /><br />Drücken Sie die Leertaste, um mit dem Experiment zu beginnen." x=0 y=0 z_index=0
+	set description "Intro main study"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Now the experiment begins. <br /><br />If you have any questions, please contact the investigator. <br /><br />Press the space bar to start the experiment." x=0 y=0 z_index=0
 
 define sketchpad Intro_start
 	set duration keypress
-	set description "Präsentiert Stimuli"
-	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Herzlich Willkommen! <br /><br />Vielen Dank, dass Sie sich Zeit für unsere Studie nehmen.<br /><br />Drücken Sie die Leertaste zum fortfahren.<br />" x=0 y=0 z_index=0
+	set description "welcome screen"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Welcome! <br /><br />Thank you very much for taking the time for our study.<br /><br />Press the space bar to continue.<br />" x=0 y=0 z_index=0
 
 define sketchpad Intro_start_2
 	set duration keypress
-	set description "Präsentiert Stimuli"
-	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="In dieser Studie werden Ihnen zwei unterschiedliche Zahlen im Bereich von 1 bis 9 dargeboten. Die beiden dargebotenen Zahlen unterscheiden sich in ihrer Höhe. Eine 6 wäre z.B. höher als eine 5. <br /><br />Zusätzlich werden sich die beiden Zahlen auch in ihrer dargebotenen visuellen Größe unterscheiden. <br /><br />In den beiden oberen Ecken des Bildschirms befinden sich zwei viereckige Felder.<br />Ihre Aufgabe ist, es den Cursor (die Maus) so schnell wie möglich in das viereckige Feld auf der Seite der HÖHEREN Zahl zu bewegen. Ist der Cursor im Feld müssen Sie KEINE Taste drücken. <br /><br />Das bedeutet: würden die Zahlen 4 und 5 dargeboten werden, soll der Cursor so schnell wie möglich in das viereckige Feld auf der Seite der 5 bewegt werden. <br /><br />Drücken Sie die Leertaste zum fortfahren. " x=0 y=0 z_index=0
+	set description "task description"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="In this study, you are presented with two different numbers in the range 1 to 9. The two numbers differ in height. For example, 6 would be higher than 5. <br /><br />Additionally, the two numbers will also differ in their presented visual size. <br /><br />In the two upper corners of the screen, there are two square fields. <br /><br />Your task is to move the cursor (the mouse) as fast as possible into the square field on the side of the HIGHER number. If the cursor is in the square you do NOT have to press any key. <br /><br />This means that if the numbers 4 and 5 were presented, the cursor should be moved as quickly as possible to the square field on the side of 5. <br /><br />Press the space bar to continue. " x=0 y=0 z_index=0
 
 define sketchpad Intro_test
 	set duration keypress
-	set description "Präsentiert Stimuli"
-	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Zunächst beginnen 4 Übungsdurchläufe. <br /><br />Aufgabe: Bewegen Sie den Cursor so schnell wie möglich in das viereckige Feld auf der Seite der höheren Zahl. <br /><br />Drücken Sie die Leertaste zum fortfahren." x=0 y=-32 z_index=0
+	set description "intro tutorial"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Initially, 4 practice runs begin. <br /><br />Task: Move the cursor as fast as possible into the square field on the side of the higher number. <br /><br />Press the space bar to continue." x=0 y=-32 z_index=0
 
 define sketchpad ansage_richtig
 	set duration 0
 	set description "Präsentiert Stimuli"
-	draw textline center=1 color="#00aa00" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Die Geschwindigkeit ist gut so!" x=0 y=0 z_index=0
+	draw textline center=1 color="#00aa00" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="The speed is good like that!" x=0 y=0 z_index=0
 
 define sketchpad ansage_zuschnell
 	set duration 0
 	set description "Präsentiert Stimuli"
-	draw textline center=1 color="#ff0000" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Bewege den Cursor nächstes mal etwas langsamer am Start! " x=0 y=0 z_index=0
+	draw textline center=1 color="#ff0000" font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="For the next time, move the cursor a little slower at the start!" x=0 y=0 z_index=0
 
 define mousetrap_response button_response_main
 	__warning_message__
@@ -74,7 +74,6 @@ define mousetrap_response button_response_main
 	set timeout infinite
 	set start_coordinates "0;280"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories no
 	set reset_mouse no
 	set number_of_buttons 1
@@ -82,7 +81,6 @@ define mousetrap_response button_response_main
 	set max_initiation_time 1000
 	set logging_resolution 1
 	set description "Tracks mouse movements"
-	set correct_button ""
 	set click_required yes
 	set check_initiation_time no
 	set button4 ""
@@ -99,7 +97,6 @@ define mousetrap_response button_response_test
 	set timeout infinite
 	set start_coordinates "0;280"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories no
 	set reset_mouse no
 	set number_of_buttons 1
@@ -107,7 +104,6 @@ define mousetrap_response button_response_test
 	set max_initiation_time 1000
 	set logging_resolution 1
 	set description "Tracks mouse movements"
-	set correct_button ""
 	set click_required yes
 	set check_initiation_time no
 	set button4 ""
@@ -122,7 +118,7 @@ define sketchpad canvas_main_button
 	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
 	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
 	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text=OK x=0 y=352 z_index=0
-	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Drücken Sie OK zum starten." x=0 y=-288 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Press OK to start." x=0 y=-288 z_index=0
 	draw rect color="#000000" fill=0 h=64 penwidth=1 show_if=always w=128 x=-64 y=320 z_index=0
 	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
 	draw rect color="#dbdeff" fill=1 h=-96 penwidth=1 show_if=always w=160 x=352 y=-288 z_index=0
@@ -177,7 +173,7 @@ define sketchpad canvas_test_button
 	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=160 x=-512 y=-288 z_index=0
 	draw rect color="#000000" fill=0 h=-96 penwidth=1 show_if=always w=-160 x=512 y=-288 z_index=0
 	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text=OK x=0 y=352 z_index=0
-	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Drücken Sie OK zum starten." x=0 y=-288 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family=mono font_italic=no font_size=25 html=yes show_if=always text="Press OK to start." x=0 y=-288 z_index=0
 	draw rect color="#000000" fill=0 h=64 penwidth=1 show_if=always w=128 x=-64 y=320 z_index=0
 	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=-512 y=-384 z_index=0
 	draw rect color="#dbdeff" fill=1 h=96 penwidth=1 show_if=always w=160 x=352 y=-384 z_index=0
@@ -469,7 +465,6 @@ define mousetrap_response mousetrap_afterhover
 	set timeout infinite
 	set start_coordinates "0;280"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories yes
 	set reset_mouse no
 	set number_of_buttons 2
@@ -494,7 +489,6 @@ define mousetrap_response mousetrap_tilhover
 	set timeout infinite
 	set start_coordinates "0;352"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories yes
 	set reset_mouse yes
 	set number_of_buttons 1
@@ -628,8 +622,8 @@ define mousetrap_response new_mousetrap_response
 
 define sketchpad new_sketchpad
 	set duration keypress
-	set description "Präsentiert Stimuli"
-	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="Das Experiment ist nun vorbei. <br /><br />Vielen Dank für Ihre Teilnahme! <br /><br />Bitte geben Sie dem/der Versuchsleiter*in Bescheid." x=0 y=0 z_index=0
+	set description "text goodbye"
+	draw textline center=1 color=black font_bold=no font_family=mono font_italic=no font_size=28 html=yes show_if=always text="The experiment is now over. <br /><br />Thank you for your participation! <br /><br />Please let the investigator know." x=0 y=0 z_index=0
 
 define sketchpad new_sketchpad_1
 	set duration keypress
@@ -677,7 +671,6 @@ define mousetrap_response test_afterhover
 	set timeout 2495
 	set start_coordinates "0;280"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories yes
 	set reset_mouse no
 	set number_of_buttons 2
@@ -758,7 +751,6 @@ define mousetrap_response test_tilhover
 	set timeout infinite
 	set start_coordinates "0;352"
 	set skip_item no
-	set sketchpad ""
 	set save_trajectories no
 	set reset_mouse yes
 	set number_of_buttons 1
