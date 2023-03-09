@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
-  error = FALSE,
+  error = FALSE
 )
 ```
 
@@ -25,10 +25,9 @@ Since we have two separate analysis pipelines both in [R](https://www.r-project.
 1. Data import
 2. Geometric processing
 3. Re-sampling and interpolation
-4. Visualization
+4. Data inspection
 5. Summary measures
-6. Continuous measures
-7. Statistical analysis
+6. Advanced measures
 
 ```{r setup, results='hide'}
 library(readbulk)
@@ -154,7 +153,186 @@ plot_grid(
 ```
 
 
-# Visualization
+# Data inspection
+So, after preprocessing, we need to better understand our data and see whether there are any quirks hidden in it.
+
+## Heat maps
+A great way get an overview of the data are heat maps.
+A simple way to get a heat map is `mt_heatmap_ggplot()` or just to plot single trajectories transparently.
+
+```{r heatmaps1}
+plot_grid(
+  mt %>% mt_plot(alpha = .1),
+  mt %>% mt_heatmap_ggplot(colors=c("black","darkorange"),verbose = F),
+  nrow = 1,
+  labels = NULL
+)
+```
+Since we have two conditions of congruency (congruent vs incongruent) in the task, which might affect the movements decisively, it does not hurt to get an impression of the heat maps split up by condition.
+
+```{r heatmaps2}
+mt %>% mt_heatmap_ggplot(colors=c("black","darkorange"),verbose = F, facet_col = "t_condition")
+```
+
+## Reversals
+A typical problem in mouse-tracking studies is that subjects move the mouse backwards to gain some additional space for their decision.
+This can be checked by counting the trials in which the mouse moved backwards on the y-axis at any time, captured here in `ypos_flips` given by `mt_measures()`for each subject.
+Another problem is that subjects might stop their movement, which logically prevents any cognition to leak into the non-existent movement.
+Ideally, all trials would show a movement of a constant speed which would result in a straight movement on the y-axis (though in reality, we know that subjects regularly slow down a bit during stimulus processing).
+Hence, we can correlate the real movement on the y-axis with a constant movement on the y-axis and see whether any trials strongly deviate from the constant movement `no such function`.
+
+```{r reversals}
+mt = mt %>%
+  mt_measures(flip_threshold = 0)
+
+plot_grid(
+  mt %>%
+    mt_plot(use = "tn_trajectories", x = "steps", y = "ypos", alpha = .1),
+  mt %>% 
+    mt_aggregate_per_subject(use_variables = "ypos_flips", subject_id = "p_num", .funs = "sum") %>% 
+    ggplot(aes(x=1, y=ypos_flips))+
+    geom_boxplot()+
+    geom_point(position = "jitter", alpha=.1),
+  nrow = 1,
+  labels = NULL
+)
+```
+
+## Effects in trajectories
+Now we can look qualitatively at the effects of movements between the congruent and the incongruent condition.
+Per subject, we take the mean of all movements of one condition.
+Note, that we only include trials that were solved correctly.
+
+```{r effectxy}
+mt %>% 
+  mt_subset(c_correct==1) %>% 
+  mt_plot_aggregate(
+    use = "tn_trajectories",
+    subject_id = "p_num",
+    color = "t_condition"
+  )
+```
+The effect is also clearly visible when we only look on the effects on the x-axis, which also allows us to look at the time-course.
+
+```{r effectx}
+mt %>% 
+  mt_subset(c_correct==1) %>% 
+  mt_plot_aggregate(
+    use = "tn_trajectories",
+    x = "steps", y = "xpos",
+    subject_id = "p_num",
+    color = "t_condition",
+  )
+```
+If we want a time-course for a measure that integrates X- and Y-movement, we can use the angle.
+Since this is a differential measure, it is a bit noisier than X-coordinates.
+
+```{r effectangle}
+mt = mt %>% 
+  mt_derivatives(use = "tn_trajectories") %>% 
+  mt_angles(use = "tn_trajectories", na_replace = T)
+
+mt %>% 
+  mt_subset(c_correct==1) %>% 
+  mt_plot_aggregate(
+    use = "tn_trajectories",
+    x = "steps", y = "angle_p",
+    subject_id = "p_num",
+    color = "t_condition",
+  )
+```
+
 # Summary measures
-# Continuous measures
-# Statistical analysis
+So, now we a rather complete picture about how the data look like, and we have a qualitative idea about the effects in the data.
+However, in science, we are usually asked to put the observed qualities into quantities.
+One way to do that is to use summary measures (or trajectory indices) that summarize characteristics of the trajectories into single values per trial.
+Fortunately (or unfortunately), there exist a plethora of such measures focusing on one of three characteristics: curvature, complexity, or time.
+Here, we focus on curvature by examining the maximum absolute deviation (MAD) and area under the curve (AUC).
+
+```{r summary}
+mt = mt %>% 
+  mt_measures()
+
+plot_data = mt$data %>% 
+  left_join(
+    mt$measures %>% select(mt_id, MAD, AUC),
+    by = "mt_id"
+  ) 
+
+plot_grid(
+  trial_data %>% 
+    ggplot(aes(x=t_condition,y=MAD,group=p_num))+
+    geom_point(alpha = .1)+
+    stat_summary(fun = "mean", geom = "line", alpha = .1)+
+    stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
+  trial_data %>% 
+    ggplot(aes(x=t_condition,y=AUC,group=p_num))+
+    geom_point(alpha = .1)+
+    stat_summary(fun = "mean", geom = "line", alpha = .1)+
+    stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
+  nrow = 1,
+  label = NULL
+)
+```
+
+
+# Advanced measures
+A more advanced, but still relatively simple idea is to map the trajectories to predefined prototype trajectories.
+By doing this, we focus exclusively on the trajectory shape rather than the temporal evolution and we can dissect and make sense of the heterogeneity that we have observed in the heat maps.
+
+```{r prototypes}
+mt = mt %>% 
+  mt_map()
+
+plot_grid(
+  mt$data %>%
+    left_join(mt$prototyping, by = "mt_id") %>% 
+    group_by(t_condition, prototype_label) %>%
+    summarise(
+      n=n(),
+      .groups = "drop",
+    ) %>%
+    mutate(
+      perc=n/sum(n),
+    ) %>% 
+    ggplot(aes(x=t_condition,y=perc,fill=forcats::fct_rev(prototype_label)))+
+    geom_bar(stat="identity",color="black")+
+    scale_fill_brewer(type="seq", name="Classification", palette = "GnBu", direction = -1)+
+    theme(
+      legend.position = "right"
+    ) +
+    guides(fill=FALSE),
+  mt_plot(
+    mt_prototypes,
+    facet_row="mt_id",
+    return_type = "plot"
+    )+
+    ggh4x::facet_grid2(rows = vars(forcats::fct_rev(factor(mt_id,levels=rownames(mt_prototypes)))),
+                       strip = ggh4x::strip_themed(background_y = ggh4x::elem_list_rect(fill = rev(RColorBrewer::brewer.pal(5,"GnBu")))))+
+    theme(
+      axis.text=element_blank(),
+      axis.ticks=element_blank(),
+      axis.title=element_blank(),
+      strip.text.y=element_text(hjust=0,vjust=1,angle=-90),
+    ),
+  nrow = 1,
+  labels = NULL,
+  rel_widths = c(3.0,1)
+)
+
+# mt %>% 
+#   mt_plot(
+#   use2 = "prototyping",
+#   facet_col = "prototype_label",
+#   alpha =.05)
+```
+
+# Possible Exercises
+*Investigate the influence of another experimental factor!*
+For instance, other factors might be the difference between the two numbers, or the congruency of the previous trial.
+
+TODO
+
+
+
+
