@@ -22,7 +22,12 @@ prepared prior to the first session on Tuesday.
     - [Matlab](https://www.mathworks.com/products/matlab.html)
       (including the [TCMR toolbox](osf.io/5e3vn))
 
-## What you might read
+## What you might want to read
+
+Here, we provide some open-access literature that you might want to read
+between the sessions or after the course. During the course, we cover
+the papers’ content only partially, so you can gain much more insights
+into mouse tracking by reading them.
 
 - [Freeman (2018: CDPS)](https://doi.org/10.1177/0963721417746793)
 - [Scherbaum & Dshemuchadse (2020:
