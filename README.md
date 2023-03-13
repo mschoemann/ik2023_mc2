@@ -3,7 +3,9 @@
 
 This is the accompanying repository for the method course **MC2:
 Tracking the embodied dynamics of cognition using computer mouse
-tracking** by Stefan Scherbaum and Martin Schoemann during the
+tracking** by [Stefan
+Scherbaum](https://tu-dresden.de/Members/stefan.scherbaum) and [Martin
+Schoemann](https://tu-dresden.de/Members/martin.schoemann) during the
 [Interdisciplinary College 2023](https://interdisciplinary-college.org/)
 (03/12/-03/17/2023).
 

@@ -5,7 +5,7 @@ output:
 
 # IK2023 - MC2
 
-This is the accompanying repository for the method course **MC2: Tracking the embodied dynamics of cognition using computer mouse tracking** by Stefan Scherbaum and Martin Schoemann during the [Interdisciplinary College 2023](https://interdisciplinary-college.org/) (03/12/-03/17/2023).
+This is the accompanying repository for the method course **MC2: Tracking the embodied dynamics of cognition using computer mouse tracking** by [Stefan Scherbaum](https://tu-dresden.de/Members/stefan.scherbaum) and [Martin Schoemann](https://tu-dresden.de/Members/martin.schoemann) during the [Interdisciplinary College 2023](https://interdisciplinary-college.org/) (03/12/-03/17/2023).
 
 ## What you need
 
@@ -18,6 +18,9 @@ During the course, you need some software that we ask you to have prepared prior
 
 
 ## What you might read
+
+Here, we provide some open-access literature that you might want to read between the sessions or after the course.
+During the course, we cover the papers' content only partially, so you can gain much more insights into mouse tracking by reading them.  
 
 - [Freeman (2018: CDPS)](https://doi.org/10.1177/0963721417746793)
 - [Scherbaum & Dshemuchadse (2020: M&C)](https://doi.org/10.3758/s13421-019-00981-x)
