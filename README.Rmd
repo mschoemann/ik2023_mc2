@@ -17,7 +17,7 @@ During the course, you need some software that we ask you to have prepared prior
     -   [Matlab](https://www.mathworks.com/products/matlab.html) (including the [TCMR toolbox](osf.io/5e3vn))
 
 
-## What you might read
+## What you might want to read
 
 Here, we provide some open-access literature that you might want to read between the sessions or after the course.
 During the course, we cover the papers' content only partially, so you can gain much more insights into mouse tracking by reading them.  
