@@ -80,11 +80,11 @@ Now, we look at the cursor trajectories from only one participant in order to le
 
 ```{r geometric1}
 mt %>% 
-  mt_subset(p_num==0) %>% 
+  mt_subset(p_num==53) %>% 
   mt_plot()
 ```
 
-The plot shows the raw cursor trajectories from the participant with `p_num==0`, and we can see that the trajectories were tracked in a somewhat twisted way, that is, the coordinate system in OpenSesame was centered in middle of the screen and going upwards toward the response boxes decreased the y-coordinate. 
+The plot shows the raw cursor trajectories from the participant with `p_num==53`, and we can see that the trajectories were tracked in a somewhat twisted way, that is, the coordinate system in OpenSesame was centered in middle of the screen and going upwards toward the response boxes decreased the y-coordinate. 
 We can also see that the trajectories differ in their starting point (i.e., the cursor position in the moment the stimuli were presented) and end point (i.e., the first cursor position in one of the response boxes).
 And, we see that trajectories going into different response boxes cannot easily be compared as they end in opposite directions.
 Therefore, we remap (`mt_remap_symmetric()`) the trajectories and align their starting point (`mt_align()`).
@@ -99,7 +99,7 @@ mt = mt %>%
   )
 
 mt %>% 
-  mt_subset(p_num==0) %>% 
+  mt_subset(p_num==53) %>% 
   mt_plot()
 ```
 
@@ -111,10 +111,10 @@ We cannot easily see that characteristic when we plot the trajectories on the x/
 ```{r resampling1}
 plot_grid(
   mt %>% 
-    mt_subset(p_num==0) %>% 
+    mt_subset(p_num==53) %>% 
     mt_plot(x = "timestamps", y = "xpos"),
   mt %>%
-    mt_subset(p_num==0) %>% 
+    mt_subset(p_num==53) %>% 
     mt_plot(x = "timestamps", y = "ypos"),
   nrow = 1,
   labels = NULL
@@ -139,13 +139,13 @@ dimnames(mt$ln_trajectories)[[3]][3]="steps"
   
 plot_grid(
   mt %>% 
-    mt_subset(p_num==0) %>% 
+    mt_subset(p_num==53) %>% 
     mt_plot(use = "tn_trajectories", x = "steps", y = "xpos"),
   mt %>% 
-    mt_subset(p_num==0) %>% 
+    mt_subset(p_num==53) %>% 
     mt_plot(use = "ln_trajectories", x = "steps", y = "xpos"),
   mt %>% 
-    mt_subset(p_num==0) %>% 
+    mt_subset(p_num==53) %>% 
     mt_plot(use = "rs_trajectories", x = "timestamps", y = "xpos"),
   nrow = 1,
   labels = NULL
@@ -236,7 +236,7 @@ mt %>%
   mt_subset(c_correct==1) %>% 
   mt_plot_aggregate(
     use = "tn_trajectories",
-    x = "steps", y = "angle_p",
+    x = "steps", y = "angle_v",
     subject_id = "p_num",
     color = "t_condition",
   )
@@ -251,26 +251,38 @@ Here, we focus on curvature by examining the maximum absolute deviation (MAD) an
 
 ```{r summary}
 mt = mt %>% 
-  mt_measures()
+  mt_measures() %>% 
+  mt_sample_entropy()
 
 plot_data = mt$data %>% 
   left_join(
-    mt$measures %>% select(mt_id, MAD, AUC),
+    mt$measures %>% select(mt_id, MAD, AUC, sample_entropy, xpos_flips),
     by = "mt_id"
   ) 
 
 plot_grid(
-  trial_data %>% 
+  plot_data %>% 
     ggplot(aes(x=t_condition,y=MAD,group=p_num))+
     geom_point(alpha = .1)+
     stat_summary(fun = "mean", geom = "line", alpha = .1)+
     stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
-  trial_data %>% 
+  plot_data %>%
     ggplot(aes(x=t_condition,y=AUC,group=p_num))+
     geom_point(alpha = .1)+
     stat_summary(fun = "mean", geom = "line", alpha = .1)+
     stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
+  # plot_data %>% 
+  #   ggplot(aes(x=t_condition,y=xpos_flips,group=p_num))+
+  #   geom_point(alpha = .1)+
+  #   stat_summary(fun = "mean", geom = "line", alpha = .1)+
+  #   stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
+  plot_data %>% 
+    ggplot(aes(x=t_condition,y=sample_entropy,group=p_num))+
+    geom_point(alpha = .1)+
+    stat_summary(fun = "mean", geom = "line", alpha = .1)+
+    stat_summary(aes(group=1),fun = "mean", geom = "line", alpha = 1, color="steelblue"),
   nrow = 1,
+  ncol = 3,
   label = NULL
 )
 ```
@@ -286,7 +298,8 @@ mt = mt %>%
 
 plot_grid(
   mt$data %>%
-    left_join(mt$prototyping, by = "mt_id") %>% 
+    left_join(mt$prototyping, by = "mt_id") %>%
+    filter(c_correct==1) %>% 
     group_by(t_condition, prototype_label) %>%
     summarise(
       n=n(),
@@ -301,7 +314,7 @@ plot_grid(
     theme(
       legend.position = "right"
     ) +
-    guides(fill=FALSE),
+    guides(fill="none"),
   mt_plot(
     mt_prototypes,
     facet_row="mt_id",
@@ -320,18 +333,33 @@ plot_grid(
   rel_widths = c(3.0,1)
 )
 
-# mt %>% 
-#   mt_plot(
-#   use2 = "prototyping",
-#   facet_col = "prototype_label",
-#   alpha =.05)
+
+plot_grid(
+  mt %>%
+    mt_subset(c_correct==1 & t_condition=="congruent") %>% 
+    mt_plot(
+    use2 = "prototyping",
+    facet_col = "prototype_label",
+    alpha =.05),
+  mt %>%
+    mt_subset(c_correct==1 & t_condition=="incongruent") %>% 
+    mt_plot(
+    use2 = "prototyping",
+    facet_col = "prototype_label",
+    alpha =.05),
+  nrow = 2,
+  ncol = 1,
+  label = NULL
+)
+
 ```
 
 # Possible Exercises
-*Investigate the influence of another experimental factor!*
-For instance, other factors might be the difference between the two numbers, or the congruency of the previous trial.
+## Investigate the influence of another experimental factor
+For instance, other factors might be the difference between the two numbers, or the congruency of the previous trial (is `t_congruency` the same or does it switch from trial to trial).
 
-TODO
+## Investigate movement quality
+Check, for instance, which participants show less movement quality and this influences the results by removing these participants from the analyses.
 
 
 
